@@ -14,7 +14,7 @@ function getUsers(req, res, next) {
       if (users) {
         return res.status(200).send(users);
       }
-      return Promise.reject(new NotFoundError("User not found"));
+      return Promise.reject(new NotFoundError('User not found'));
     })
     .catch(next);
 }

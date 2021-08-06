@@ -1,4 +1,4 @@
-const Articles = require('../models/articles');
+const Articles = require('../models/article');
 const RequestError = require('../errors/requestError');
 const NotFoundError = require('../errors/notFoundError');
 
