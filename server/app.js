@@ -10,6 +10,8 @@ const userRouter = require('./routes/users');
 const articleRouter = require('./routes/articles');
 const auth = require('./middlewares/auth');
 
+const { login, createUser } = require('./controllers/userControllers');
+
 const helmet = require('helmet');
 const { celebrate, Joi, errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -31,6 +33,29 @@ app.use(cors());
 app.options('*', cors());
 // enabling the winston request logger
 app.use(requestLogger);
+
+app.post(
+  '/signin',
+  celebrate({
+    body: Joi.object().keys({
+      email: Joi.string().required().email(),
+      password: Joi.string().required().min(8),
+    })
+      .unknown(true),
+  }),
+  login,
+);
+app.post(
+  '/signup',
+  celebrate({
+    body: Joi.object().keys({
+      email: Joi.string().required().email(),
+      password: Joi.string().required().min(8),
+    })
+      .unknown(true),
+  }),
+  createUser,
+);
 
 app.use('/', auth, userRouter);
 app.use('/', auth, articleRouter);
