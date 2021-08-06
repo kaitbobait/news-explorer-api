@@ -16,4 +16,4 @@ function validateUrl(string) {
 }
 
 // returns information about the users - email & name
-router.get('/users', getUsers);
+router.get("/users", getUsers);
