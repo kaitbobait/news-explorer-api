@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { celebrate, Joi } = require('celebrate');
 const validator = require('validator');
-const { getArticles } = require('../controllers/articleControllers');
+const { getArticles, createArticle } = require('../controllers/articleControllers');
 
 function validateUrl(string) {
   const result = validator.isURL(string);
@@ -14,4 +14,29 @@ function validateUrl(string) {
 }
 
 // returns all articles saved by the user
-router.get('/cards', getArticles);
+router.get('/articles', getArticles);
+
+// creates an article w/ the keyword, title, text, date, source, link, and image
+router.post(
+  '/articles',
+  celebrate({
+    body: Joi.object().keys({
+      keyword: Joi.string().required(),
+      title: Joi.string().required(),
+      text: Joi.string().required(),
+      date: Joi.string().required(),
+      source: Joi.string().required(),
+      link: Joi.string().required().custom(validateUrl),
+      image: Joi.string().required().custom(validateUrl),
+    }),
+  }),
+  createArticle,
+);
+
+router.delete('/cards/:cardId',
+  celebrate({
+    params: Joi.object().keys({
+      cardId: Joi.string().hex().length(24),
+    }),
+  }),
+  deleteCard);

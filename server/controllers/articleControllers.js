@@ -13,4 +13,20 @@ function getArticles(req, res, next) {
     .catch(next);
 }
 
-module.exports = { getArticles };
+function createArticle(req, res, next) {
+  const {
+    keyword, title, text, date, source, link, image,
+  } = req.body;
+  return Articles.create({
+    keyword, title, text, date, source, link, image, owner: req.user._id,
+  })
+    .then((article) => {
+      if (!article) {
+        throw new RequestError('Invalid data');
+      }
+      res.status(200).send(article);
+    })
+    .catch(next);
+}
+
+module.exports = { getArticles, createArticle };
