@@ -29,4 +29,16 @@ function createArticle(req, res, next) {
     .catch(next);
 }
 
-module.exports = { getArticles, createArticle };
+function deleteArticle(req, res, next) {
+  return Articles.findByIdAndRemove(req.params.articleId)
+    .then((article) => {
+      if (article) {
+        res.send({ data: article });
+      } else {
+        throw new NotFoundError('Article not found with ID');
+      }
+    })
+    .catch(next);
+}
+
+module.exports = { getArticles, createArticle, deleteArticle };
