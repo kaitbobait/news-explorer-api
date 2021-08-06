@@ -33,6 +33,7 @@ router.post(
   createArticle,
 );
 
+// deletes the stored article by _id
 router.delete('/articles/:articleId',
   celebrate({
     params: Joi.object().keys({
